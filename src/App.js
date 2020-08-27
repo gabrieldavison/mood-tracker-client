@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Login from "./Login";
+import client from "./feathers";
+import Quiz from "./Quiz";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [login, setLogin] = useState();
+
+  useEffect(() => {
+    // Try to authenticate with the JWT stored in localStorage
+    client.authenticate().catch(() => setLogin(null));
+
+    // On successfull login
+    client.on("authenticated", (login) => {
+      setLogin({ login });
+    });
+  }, []);
+
+  return login == null ? <Login setLogin={setLogin} /> : <Quiz />;
 }
 
 export default App;
