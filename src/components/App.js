@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+
 import Login from "./Login";
-import client from "./feathers";
+import client from "../feathers";
 import Quiz from "./Quiz";
 
 function App() {

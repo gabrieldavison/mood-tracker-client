@@ -1,15 +1,29 @@
 import React, { useState } from "react";
-import TriggersList from "./components/triggersList";
-import client from "./feathers";
+import * as R from "ramda";
+
+import TriggersList from "./triggersList";
+import client from "../feathers";
+import useForm from "./useForm";
+import validate from "../utils/validate";
+import XYInput from "./XY-input";
 
 function Quiz() {
-  const [happy, setHappy] = useState("50");
-  const [calm, setCalm] = useState("50");
-  const [sleep, setSleep] = useState("");
   const [triggerInput, setTriggerInput] = useState("");
   const [triggersList, setTriggersList] = useState([]);
-  const [notes, setNotes] = useState("");
+  const [happy, setHappy] = useState();
+  const [calm, setCalm] = useState();
+  const updateHappy = (val) => setHappy(val);
+  const updateCalm = (val) => setCalm(val);
+
   const [errorMessage, setErrorMessage] = useState();
+  // const initialValues = {
+  //   happy: "50",
+  //   calm: "50",
+  // };
+  const { values, errors, handleChange, handleSubmit } = useForm(
+    submit,
+    validate
+  );
 
   function addTrigger(e) {
     e.preventDefault();
@@ -26,11 +40,10 @@ function Quiz() {
     );
   }
 
-  function submit(e) {
-    e.preventDefault();
-    console.log(happy, calm, sleep, triggersList, notes);
-
-    const data = { happy, calm, sleep, triggersList };
+  function submit(values) {
+    const { sleep, notes } = values;
+    const data = { happy, calm, sleep, triggersList, notes };
+    console.log(data);
     client
       .service("log")
       .create(data)
@@ -39,33 +52,34 @@ function Quiz() {
 
   return (
     <form>
-      <div>
+      <XYInput updateHappy={updateHappy} updateCalm={updateCalm} />
+      {/* <div>
         <label htmlFor="happy">Happy</label>
         <input
-          id="happy"
+          name="happy"
           type="range"
           min="0"
           max="100"
-          value={happy}
-          onChange={(e) => setHappy(e.target.value)}
+          value={values.happy || initialValues.happy}
+          onChange={handleChange}
         />
         <label htmlFor="calm">Calm</label>
         <input
-          id="calm"
+          name="calm"
           type="range"
           min="0"
           max="100"
-          value={calm}
-          onChange={(e) => setCalm(e.target.value)}
+          value={values.calm || initialValues.calm}
+          onChange={handleChange}
         />
-      </div>
+      </div> */}
       <div>
         <label htmlFor="sleep">How many hours did you sleep last night?</label>
         <input
           type="number"
-          id="sleep"
-          value={sleep}
-          onChange={(e) => setSleep(e.target.value)}
+          name="sleep"
+          value={values.sleep || ""}
+          onChange={handleChange}
         />
       </div>
       <div>
@@ -84,13 +98,14 @@ function Quiz() {
       <div>
         <label htmlFor="notes" />
         <textarea
-          id="notes"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
+          value={values.notes || ""}
+          onChange={handleChange}
+          name="notes"
         ></textarea>
       </div>
-      <button onClick={(e) => submit(e)}>Submit</button>
-      <p>{errorMessage === undefined ? null : errorMessage}</p>
+      <button onClick={handleSubmit}>Submit</button>
+      {/* <p>{errorMessage === undefined ? null : errorMessage}</p> */}
+      {errors === undefined ? null : <p>{errors}</p>}
     </form>
   );
 }
