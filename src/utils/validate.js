@@ -1,13 +1,10 @@
 export default function validate(values) {
-  let errors = undefined;
-  // if (!values.happy) {
-  //   errors = "add a value for happy";
-  // }
-  // if (!values.calm) {
-  //   errors = "add a value for calm";
-  // }
-  if (!values.sleep) {
-    errors = "add a value for sleep";
+  let errors = [];
+  if (!values.happy) {
+    errors.push("add a value for happy");
+  }
+  if (!values.calm) {
+    errors.push("add a value for calm");
   }
   return errors;
 }

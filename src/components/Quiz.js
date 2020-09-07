@@ -1,29 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as R from "ramda";
 
 import TriggersList from "./triggersList";
 import client from "../feathers";
 import useForm from "./useForm";
 import validate from "../utils/validate";
-import XYInput from "./XY-input";
+import XYInput from "./XYInput";
 
 function Quiz() {
   const [triggerInput, setTriggerInput] = useState("");
   const [triggersList, setTriggersList] = useState([]);
   const [happy, setHappy] = useState();
   const [calm, setCalm] = useState();
-  const updateHappy = (val) => setHappy(val);
-  const updateCalm = (val) => setCalm(val);
+  const [errors, setErrors] = useState([]);
 
-  const [errorMessage, setErrorMessage] = useState();
-  // const initialValues = {
-  //   happy: "50",
-  //   calm: "50",
-  // };
-  const { values, errors, handleChange, handleSubmit } = useForm(
-    submit,
-    validate
-  );
+  // const updateHappy = (val) => setHappy(val);
+  // const updateCalm = (val) => setCalm(val);
+
+  let happySlider = useRef();
+  let calmSlider = useRef();
+
+  useEffect(() => {
+    happySlider.current = document.getElementById("happy");
+    calmSlider.current = document.getElementById("calm");
+  }, []);
+
+  function setHappySlider(val) {
+    happySlider.current.value = val;
+    setHappy(val);
+  }
+
+  function setCalmSlider(val) {
+    calmSlider.current.value = val;
+    setCalm(val);
+  }
+
+  const { values, handleChange, handleSubmit } = useForm(submit);
 
   function addTrigger(e) {
     e.preventDefault();
@@ -43,43 +55,54 @@ function Quiz() {
   function submit(values) {
     const { sleep, notes } = values;
     const data = { happy, calm, sleep, triggersList, notes };
-    console.log(data);
-    client
-      .service("log")
-      .create(data)
-      .catch((error) => setErrorMessage(error.message));
+
+    const newErrors = validate(data);
+
+    if (R.isEmpty(newErrors)) {
+      console.log(data);
+      client
+        .service("log")
+        .create(data)
+        .catch((error) => setErrors(error.message));
+    } else {
+      setErrors(newErrors);
+    }
   }
 
   return (
     <form>
-      <XYInput updateHappy={updateHappy} updateCalm={updateCalm} />
-      {/* <div>
-        <label htmlFor="happy">Happy</label>
+      <XYInput setHappySlider={setHappySlider} setCalmSlider={setCalmSlider} />
+      <div>
+        <label htmlFor="">Sad</label>
         <input
+          id="happy"
           name="happy"
           type="range"
           min="0"
           max="100"
-          value={values.happy || initialValues.happy}
-          onChange={handleChange}
+          value={happy || ""}
+          onChange={(e) => setHappy(e.target.value)}
         />
-        <label htmlFor="calm">Calm</label>
+        <label htmlFor="happy">Happy</label>
+        <label htmlFor="">Anxious</label>
         <input
+          id="calm"
           name="calm"
           type="range"
           min="0"
           max="100"
-          value={values.calm || initialValues.calm}
-          onChange={handleChange}
+          value={calm || ""}
+          onChange={(e) => setCalm(e.target.value)}
         />
-      </div> */}
+        <label htmlFor="calm">Calm</label>
+      </div>
       <div>
         <label htmlFor="sleep">How many hours did you sleep last night?</label>
         <input
           type="number"
           name="sleep"
           value={values.sleep || ""}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e.target.value, e.target.name)}
         />
       </div>
       <div>
@@ -96,7 +119,7 @@ function Quiz() {
         <button onClick={(e) => addTrigger(e)}>Add</button>
       </div>
       <div>
-        <label htmlFor="notes" />
+        <label htmlFor="notes">Notes</label>
         <textarea
           value={values.notes || ""}
           onChange={handleChange}
@@ -105,7 +128,9 @@ function Quiz() {
       </div>
       <button onClick={handleSubmit}>Submit</button>
       {/* <p>{errorMessage === undefined ? null : errorMessage}</p> */}
-      {errors === undefined ? null : <p>{errors}</p>}
+      {R.isEmpty(errors)
+        ? null
+        : errors.map((error, i) => <p key={i}>{error}</p>)}
     </form>
   );
 }

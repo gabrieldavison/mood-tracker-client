@@ -1,28 +1,14 @@
 import { useState } from "react";
-import * as R from "ramda";
 
-export default function useForm(submit, validate) {
+export default function useForm(submit) {
   const [values, setValues] = useState({});
-  const [errors, setErrors] = useState(undefined);
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    const newErrors = validate(values);
-    console.log("newErrors", newErrors);
-    console.log(values);
-
-    if (newErrors === undefined) {
-      console.log("submit");
-      submit(values);
-    } else {
-      console.log(newErrors);
-      setErrors(newErrors);
-    }
+    submit(values);
   }
 
-  function handleChange(e) {
-    const { value, name } = e.target;
+  function handleChange(value, name) {
     console.log(name);
     console.log(value);
     const newValues = {
@@ -37,6 +23,5 @@ export default function useForm(submit, validate) {
     values,
     handleSubmit,
     handleChange,
-    errors,
   };
 }
