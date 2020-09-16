@@ -2,15 +2,15 @@ import React from "react";
 import { Router } from "@reach/router";
 
 import Nav from "./Nav";
-import Quiz from "./Quiz";
 import Dashboard from "./Dashboard";
+import NewEntry from "./NewEntry";
 
 export default function AuthnticatedRoute() {
   return (
     <>
       <Nav />
       <Router>
-        <Quiz path="/quiz" />
+        <NewEntry path="/new-entry" />
         <Dashboard path="dashboard" />
       </Router>
     </>

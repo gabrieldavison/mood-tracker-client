@@ -1,6 +1,7 @@
 import React from "react";
-import Calender from "./Calendar";
+import CalenderContainer from "./Calendar";
+import client from "../utils/feathers";
 
 export default function Dashboard() {
-  return <Calender />;
+  return <CalenderContainer />;
 }

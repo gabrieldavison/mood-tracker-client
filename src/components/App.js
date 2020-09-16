@@ -1,7 +1,7 @@
 import React, { useEffect, useState, createContext, useContext } from "react";
 
 import Login from "./Login";
-import client from "../feathers";
+import client from "../utils/feathers";
 import Quiz from "./Quiz";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 

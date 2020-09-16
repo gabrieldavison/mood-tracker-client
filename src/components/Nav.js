@@ -5,7 +5,7 @@ export default function Nav() {
   return (
     <ul>
       <li>
-        <Link to="/quiz">Quiz</Link>
+        <Link to="/new-entry">New Entry</Link>
       </li>
       <li>
         <Link to="/dashboard">Dashboard</Link>

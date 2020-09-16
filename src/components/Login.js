@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import client from "../feathers";
+import client from "../utils/feathers";
 
 function Login(props) {
   const [usernameInput, setUsernameInput] = useState("");

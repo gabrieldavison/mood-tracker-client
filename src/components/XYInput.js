@@ -1,28 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import scaleValue from "../utils/scale-value";
-import { composeWith } from "ramda";
 
 export default function XYInput(props) {
+  let canvas = useRef();
+  let ctx = useRef();
+
   useEffect(() => {
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
+    canvas.current = document.getElementById("canvas");
+    ctx.current = canvas.current.getContext("2d");
 
     drawText();
 
     let mouseIsDown = false;
     let mousePosition;
-    canvas.addEventListener("mousedown", (e) => {
+    canvas.current.addEventListener("mousedown", (e) => {
       mouseIsDown = true;
       mousePosition = getMousePos(canvas, e);
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.current.clearRect(0, 0, canvas.current.width, canvas.current.height);
       drawText();
       placeCircle(mousePosition.x, mousePosition.y);
     });
-    canvas.addEventListener("mousemove", (e) => {
+    canvas.current.addEventListener("mousemove", (e) => {
       if (mouseIsDown === true) {
         mousePosition = getMousePos(canvas, e);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.current.clearRect(
+          0,
+          0,
+          canvas.current.width,
+          canvas.current.height
+        );
         drawText();
         placeCircle(mousePosition.x, mousePosition.y);
       }
@@ -32,44 +39,70 @@ export default function XYInput(props) {
       if (mouseIsDown) {
         mouseIsDown = false;
         props.setHappySlider(
-          scaleValue(mousePosition.x, [0, canvas.width], [0, 100]),
+          scaleValue(mousePosition.x, [0, canvas.current.width], [0, 100]),
           "happy"
         );
         props.setCalmSlider(
-          scaleValue(mousePosition.y, [0, canvas.height], [100, 0]),
+          scaleValue(mousePosition.y, [0, canvas.current.height], [0, 100]),
           "calm"
         );
       }
     });
 
-    function drawText() {
-      ctx.font = "15px Arial";
-      ctx.fillText("Sad", 15, canvas.height - 5);
-      ctx.fillText("Happy", canvas.width - 50, canvas.height - 5);
-
-      ctx.save();
-      ctx.translate(12, canvas.height - 20);
-      ctx.rotate(-0.5 * Math.PI);
-
-      ctx.fillText("Anxious", 0, 0);
-      ctx.fillText("Calm", canvas.height - 65, 0);
-      ctx.restore();
-    }
-
-    function placeCircle(x, y) {
-      ctx.beginPath();
-      ctx.arc(x, y, 5, 0, 2 * Math.PI);
-      ctx.stroke();
-    }
-
     function getMousePos(canvas, evt) {
-      var rect = canvas.getBoundingClientRect();
+      var rect = canvas.current.getBoundingClientRect();
       return {
         x: evt.clientX - rect.left,
         y: evt.clientY - rect.top,
       };
     }
   }, []);
+
+  useEffect(() => {
+    if (props.initialHappy && props.initialCalm) {
+      console.log("start circle placement");
+      console.log(props.initialHappy);
+      console.log(props.initialCalm);
+      const circleX = scaleValue(
+        props.initialHappy,
+        [0, 100],
+        [0, canvas.current.width]
+      );
+      const circleY = scaleValue(
+        props.initialCalm,
+        [0, 100],
+        [0, canvas.current.height]
+      );
+      console.log(circleX + ", " + circleY);
+      ctx.current.clearRect(0, 0, canvas.current.width, canvas.current.height);
+      drawText();
+      placeCircle(circleX, circleY);
+    }
+  }, [props.initialHappy, props.initialCalm]);
+
+  function placeCircle(x, y) {
+    ctx.current.beginPath();
+    ctx.current.arc(x, y, 5, 0, 2 * Math.PI);
+    ctx.current.stroke();
+  }
+
+  function drawText() {
+    ctx.current.font = "15px Arial";
+    ctx.current.fillText("Sad", 15, canvas.current.height - 5);
+    ctx.current.fillText(
+      "Happy",
+      canvas.current.width - 50,
+      canvas.current.height - 5
+    );
+
+    ctx.current.save();
+    ctx.current.translate(12, canvas.current.height - 20);
+    ctx.current.rotate(-0.5 * Math.PI);
+
+    ctx.current.fillText("Anxious", 0, 0);
+    ctx.current.fillText("Calm", canvas.current.height - 65, 0);
+    ctx.current.restore();
+  }
 
   return (
     <canvas

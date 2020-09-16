@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as R from "ramda";
-
 import TriggersList from "./triggersList";
-import client from "../feathers";
-import useForm from "./useForm";
 import validate from "../utils/validate";
 import XYInput from "./XYInput";
 
-function Quiz() {
-  const [triggerInput, setTriggerInput] = useState("");
-  const [triggersList, setTriggersList] = useState([]);
+function Quiz(props) {
   const [happy, setHappy] = useState();
   const [calm, setCalm] = useState();
+  const [triggerInput, setTriggerInput] = useState("");
+  const [triggersList, setTriggersList] = useState([]);
+  const [sleep, setSleep] = useState();
+  const [notes, setNotes] = useState();
+
   const [errors, setErrors] = useState([]);
 
   // const updateHappy = (val) => setHappy(val);
@@ -19,6 +19,18 @@ function Quiz() {
 
   let happySlider = useRef();
   let calmSlider = useRef();
+
+  useEffect(() => {
+    const selectedEntry = props.selectedEntry;
+
+    if (selectedEntry) {
+      setHappy(selectedEntry.happy);
+      setCalm(selectedEntry.calm);
+      setTriggersList(selectedEntry.triggersList);
+      setSleep(selectedEntry.sleep);
+      setNotes(selectedEntry.notes);
+    }
+  }, [props]);
 
   useEffect(() => {
     happySlider.current = document.getElementById("happy");
@@ -35,8 +47,6 @@ function Quiz() {
     setCalm(val);
   }
 
-  const { values, handleChange, handleSubmit } = useForm(submit);
-
   function addTrigger(e) {
     e.preventDefault();
     setTriggersList(triggersList.concat(triggerInput));
@@ -52,26 +62,30 @@ function Quiz() {
     );
   }
 
-  function submit(values) {
-    const { sleep, notes } = values;
-    const data = { happy, calm, sleep, triggersList, notes };
+  // function submit(values) {
+  //   const data = { happy, calm, sleep, triggersList, notes };
 
-    const newErrors = validate(data);
+  //   const newErrors = validate(data);
 
-    if (R.isEmpty(newErrors)) {
-      console.log(data);
-      client
-        .service("log")
-        .create(data)
-        .catch((error) => setErrors(error.message));
-    } else {
-      setErrors(newErrors);
-    }
-  }
+  //   if (R.isEmpty(newErrors)) {
+  //     console.log(data);
+  //     client
+  //       .service("log")
+  //       .create(data)
+  //       .catch((error) => setErrors(error.message));
+  //   } else {
+  //     setErrors(newErrors);
+  //   }
+  // }
 
   return (
     <form>
-      <XYInput setHappySlider={setHappySlider} setCalmSlider={setCalmSlider} />
+      <XYInput
+        setHappySlider={setHappySlider}
+        setCalmSlider={setCalmSlider}
+        initialHappy={happy}
+        initialCalm={calm}
+      />
       <div>
         <label htmlFor="">Sad</label>
         <input
@@ -101,8 +115,8 @@ function Quiz() {
         <input
           type="number"
           name="sleep"
-          value={values.sleep || ""}
-          onChange={(e) => handleChange(e.target.value, e.target.name)}
+          value={sleep}
+          onChange={(e) => setSleep(e.target.value)}
         />
       </div>
       <div>
@@ -121,13 +135,23 @@ function Quiz() {
       <div>
         <label htmlFor="notes">Notes</label>
         <textarea
-          value={values.notes || ""}
-          onChange={handleChange}
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
           name="notes"
         ></textarea>
       </div>
-      <button onClick={handleSubmit}>Submit</button>
-      {/* <p>{errorMessage === undefined ? null : errorMessage}</p> */}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          props.submit(
+            { happy, calm, sleep, triggersList, notes },
+            validate,
+            setErrors
+          );
+        }}
+      >
+        Submit
+      </button>
       {R.isEmpty(errors)
         ? null
         : errors.map((error, i) => <p key={i}>{error}</p>)}
