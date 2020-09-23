@@ -18,9 +18,20 @@ export default function CalendarSidebar(props) {
       setErrors(errors);
     }
   }
+
+  function handleDelete() {
+    client.service("log").remove(props.selectedEntry._id);
+    props.setSelectedEntry(undefined);
+    props.getCalendarEntries();
+  }
+
   return (
     <>
-      <Quiz selectedEntry={props.selectedEntry} submit={submit} />
+      <Quiz
+        selectedEntry={props.selectedEntry}
+        submit={submit}
+        handleDelete={handleDelete}
+      />
     </>
   );
 }

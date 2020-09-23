@@ -2,7 +2,6 @@ import React from "react";
 import Quiz from "./Quiz";
 import { isEmpty } from "ramda";
 import client from "../utils/feathers";
-import props from "ramda/src/props";
 
 export default function NewEntry() {
   function submit(data, validate, setErrors) {
@@ -19,5 +18,5 @@ export default function NewEntry() {
     }
   }
 
-  return <Quiz submit={submit} />;
+  return <Quiz submit={submit} clearOnSubmit={true} />;
 }

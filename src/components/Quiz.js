@@ -14,12 +14,20 @@ function Quiz(props) {
 
   const [errors, setErrors] = useState([]);
 
-  // const updateHappy = (val) => setHappy(val);
-  // const updateCalm = (val) => setCalm(val);
-
+  //Sets up event listeners
   let happySlider = useRef();
   let calmSlider = useRef();
+  let canvas = useRef();
+  let ctx = useRef();
 
+  useEffect(() => {
+    happySlider.current = document.getElementById("happy");
+    calmSlider.current = document.getElementById("calm");
+    canvas.current = document.getElementById("canvas");
+    ctx.current = canvas.current.getContext("2d");
+  }, []);
+
+  //Pre populates data if passed a selected entry
   useEffect(() => {
     const selectedEntry = props.selectedEntry;
 
@@ -31,11 +39,6 @@ function Quiz(props) {
       setNotes(selectedEntry.notes);
     }
   }, [props]);
-
-  useEffect(() => {
-    happySlider.current = document.getElementById("happy");
-    calmSlider.current = document.getElementById("calm");
-  }, []);
 
   function setHappySlider(val) {
     happySlider.current.value = val;
@@ -61,22 +64,14 @@ function Quiz(props) {
       })
     );
   }
-
-  // function submit(values) {
-  //   const data = { happy, calm, sleep, triggersList, notes };
-
-  //   const newErrors = validate(data);
-
-  //   if (R.isEmpty(newErrors)) {
-  //     console.log(data);
-  //     client
-  //       .service("log")
-  //       .create(data)
-  //       .catch((error) => setErrors(error.message));
-  //   } else {
-  //     setErrors(newErrors);
-  //   }
-  // }
+  function resetFields() {
+    setHappy("");
+    setCalm("");
+    setTriggersList([]);
+    setSleep("");
+    setNotes("");
+    setErrors("");
+  }
 
   return (
     <form>
@@ -143,6 +138,9 @@ function Quiz(props) {
       <button
         onClick={(e) => {
           e.preventDefault();
+          if (props.clearOnSubmit) {
+            resetFields();
+          }
           props.submit(
             { happy, calm, sleep, triggersList, notes },
             validate,
@@ -152,6 +150,17 @@ function Quiz(props) {
       >
         Submit
       </button>
+      {props.handleDelete ? (
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            props.handleDelete();
+            resetFields();
+          }}
+        >
+          Delete
+        </button>
+      ) : null}
       {R.isEmpty(errors)
         ? null
         : errors.map((error, i) => <p key={i}>{error}</p>)}

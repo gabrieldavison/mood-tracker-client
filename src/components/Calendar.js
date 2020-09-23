@@ -51,14 +51,18 @@ export default function CalendarContainer(props) {
       <Calendar
         localizer={localizer}
         events={calendarEntries}
-        startAccessor="start"
+        startAccessor={(e) => new Date(e.start)}
         allDayAccessor="allDay"
         views={["month"]}
         style={{ height: 500 }}
         onSelectEvent={(event) => getSelectedEntry(event.id)}
         popup={true}
       />
-      <CalendarSidebar selectedEntry={selectedEntry} />
+      <CalendarSidebar
+        selectedEntry={selectedEntry}
+        setSelectedEntry={setSelectedEntry}
+        getCalendarEntries={getCalendarEntries}
+      />
     </div>
   );
 }
