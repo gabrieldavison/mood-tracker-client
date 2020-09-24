@@ -13,6 +13,7 @@ export default function CalendarContainer(props) {
   const authenticatedUser = useContext(LoginContext);
   const [calendarEntries, setCalendarEntries] = useState([]);
   const [selectedEntry, setSelectedEntry] = useState(undefined);
+  const [showEntry, setShowEntry] = useState(false);
 
   //gets calendar entries on component mount
   useEffect(() => {
@@ -46,23 +47,33 @@ export default function CalendarContainer(props) {
     setSelectedEntry(selectedEntryData.data[0]);
   }
 
+  function handleSelectEvent(id) {
+    getSelectedEntry(id);
+    setShowEntry(true);
+  }
+
   return (
     <div>
-      <Calendar
-        localizer={localizer}
-        events={calendarEntries}
-        startAccessor={(e) => new Date(e.start)}
-        allDayAccessor="allDay"
-        views={["month"]}
-        style={{ height: 500 }}
-        onSelectEvent={(event) => getSelectedEntry(event.id)}
-        popup={true}
-      />
-      <CalendarSidebar
-        selectedEntry={selectedEntry}
-        setSelectedEntry={setSelectedEntry}
-        getCalendarEntries={getCalendarEntries}
-      />
+      {!showEntry && (
+        <Calendar
+          localizer={localizer}
+          events={calendarEntries}
+          startAccessor={(e) => new Date(e.start)}
+          allDayAccessor="allDay"
+          views={["month"]}
+          style={{ height: 500 }}
+          onSelectEvent={(event) => handleSelectEvent(event.id)}
+          popup={true}
+        />
+      )}
+      {showEntry && (
+        <CalendarSidebar
+          setShowEntry={setShowEntry}
+          selectedEntry={selectedEntry}
+          setSelectedEntry={setSelectedEntry}
+          getCalendarEntries={getCalendarEntries}
+        />
+      )}
     </div>
   );
 }

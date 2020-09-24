@@ -14,6 +14,7 @@ export default function CalendarSidebar(props) {
         .service("log")
         .patch(entryId, data)
         .catch((error) => setErrors(error.message));
+      props.setShowEntry(false);
     } else {
       setErrors(errors);
     }
@@ -23,6 +24,7 @@ export default function CalendarSidebar(props) {
     client.service("log").remove(props.selectedEntry._id);
     props.setSelectedEntry(undefined);
     props.getCalendarEntries();
+    props.setShowEntry(false);
   }
 
   return (
@@ -32,6 +34,7 @@ export default function CalendarSidebar(props) {
         submit={submit}
         handleDelete={handleDelete}
       />
+      <button onClick={() => props.setShowEntry(false)}>Close</button>
     </>
   );
 }
