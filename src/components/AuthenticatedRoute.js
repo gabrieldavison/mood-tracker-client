@@ -1,16 +1,17 @@
 import React from "react";
-import { Router } from "@reach/router";
+import { Redirect, Router } from "@reach/router";
 
 import Nav from "./Nav";
 import Dashboard from "./Dashboard";
 import NewEntry from "./NewEntry";
 
-export default function AuthnticatedRoute() {
+export default function AuthenticatedRoute() {
   return (
     <>
       <Nav />
       <Router>
-        <NewEntry path="/new-entry" />
+        <Redirect from="/" to="new-entry" noThrow />
+        <NewEntry path="new-entry" />
         <Dashboard path="dashboard" />
       </Router>
     </>

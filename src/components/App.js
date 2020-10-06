@@ -18,6 +18,9 @@ function App() {
       setLogin({ login });
     });
   }, []);
+  client.on("logout", () => {
+    setLogin(null);
+  });
 
   return login == null ? (
     <Login setLogin={setLogin} />
