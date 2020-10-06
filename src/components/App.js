@@ -1,12 +1,31 @@
 import React, { useEffect, useState, createContext } from "react";
-
+import { injectGlobal } from "emotion";
 import Login from "./Login";
 import client from "../utils/feathers";
 import AuthenticatedRoute from "./AuthenticatedRoute";
+import { colors } from "../utils/colors";
 
 export const LoginContext = createContext({});
 
 function App() {
+  //Injects global styles into app
+  injectGlobal`
+  html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+
+    body {
+      max-width: 960px;
+      margin: auto;
+      font-family: 'Comfortaa', sans-serif;
+      background-color: ${colors.light}
+    }
+  
+  `;
+
   const [login, setLogin] = useState();
 
   useEffect(() => {
