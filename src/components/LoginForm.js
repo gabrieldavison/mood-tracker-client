@@ -39,6 +39,7 @@ function LoginForm(props) {
             width: 100%;
             height: 2em;
             background-color: ${colors.light} !important;
+            margin: 1em 0;
           }
           display: flex;
           flex-direction: column;

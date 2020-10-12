@@ -3,6 +3,7 @@ import * as R from "ramda";
 import TriggersList from "./triggersList";
 import validate from "../utils/validate";
 import XYInput from "./XYInput";
+import { css, cx } from "emotion";
 
 function Quiz(props) {
   const [happy, setHappy] = useState();
@@ -73,15 +74,35 @@ function Quiz(props) {
     setErrors("");
   }
 
+  const form = css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1em;
+  `;
+
+  const formItem = css`
+    margin-top: 1em;
+  `;
+
+  const formInput = css`
+    display: block;
+    margin: auto;
+    &--withBtn {
+      text-align: center;
+    }
+  `;
+  const formInput__withBtn = formInput + "--withBtn";
+
   return (
-    <form>
+    <form className={form}>
       <XYInput
         setHappySlider={setHappySlider}
         setCalmSlider={setCalmSlider}
         initialHappy={happy}
         initialCalm={calm}
       />
-      <div>
+      <div className={formItem}>
         <label htmlFor="">Sad</label>
         <input
           id="happy"
@@ -93,6 +114,8 @@ function Quiz(props) {
           onChange={(e) => setHappy(e.target.value)}
         />
         <label htmlFor="happy">Happy</label>
+      </div>
+      <div className={formItem}>
         <label htmlFor="">Anxious</label>
         <input
           id="calm"
@@ -105,31 +128,42 @@ function Quiz(props) {
         />
         <label htmlFor="calm">Calm</label>
       </div>
-      <div>
+      <div className={formItem}>
         <label htmlFor="sleep">How many hours did you sleep last night?</label>
         <input
+          className={formInput}
           type="number"
           name="sleep"
           value={sleep}
           onChange={(e) => setSleep(e.target.value)}
         />
       </div>
-      <div>
+      <div className={formItem}>
         <label htmlFor="triggers">Has anything triggered how you feel?</label>
         <TriggersList
           triggersList={triggersList}
           removeTrigger={removeTrigger}
         />
-        <input
-          id="triggers"
-          value={triggerInput}
-          onChange={(e) => setTriggerInput(e.target.value)}
-        />
-        <button onClick={(e) => addTrigger(e)}>Add</button>
+        <div className={formInput__withBtn}>
+          <input
+            id="triggers"
+            value={triggerInput}
+            onChange={(e) => setTriggerInput(e.target.value)}
+          />
+          <button onClick={(e) => addTrigger(e)}>Add</button>
+        </div>
       </div>
-      <div>
+      <div
+        className={cx(
+          formItem,
+          css`
+            text-align: center;
+          `
+        )}
+      >
         <label htmlFor="notes">Notes</label>
         <textarea
+          className={formInput}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           name="notes"

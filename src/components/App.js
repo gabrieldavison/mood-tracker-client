@@ -1,5 +1,6 @@
 import React, { useEffect, useState, createContext } from "react";
 import { injectGlobal } from "emotion";
+import emotionNormalize from "emotion-normalize";
 import Login from "./Login";
 import client from "../utils/feathers";
 import AuthenticatedRoute from "./AuthenticatedRoute";
@@ -10,6 +11,7 @@ export const LoginContext = createContext({});
 function App() {
   //Injects global styles into app
   injectGlobal`
+  ${emotionNormalize}
   html {
     box-sizing: border-box;
   }
