@@ -44,7 +44,7 @@ export default function XYInput(props) {
           "happy"
         );
         props.setCalmSlider(
-          scaleValue(mousePosition.y, [0, canvas.current.height], [0, 100]),
+          scaleValue(mousePosition.y, [0, canvas.current.height], [100, 0]),
           "calm"
         );
       }
@@ -69,7 +69,7 @@ export default function XYInput(props) {
       const circleY = scaleValue(
         props.initialCalm,
         [0, 100],
-        [0, canvas.current.height]
+        [canvas.current.height, 0]
       );
       console.log(circleX + ", " + circleY);
       ctx.current.clearRect(0, 0, canvas.current.width, canvas.current.height);

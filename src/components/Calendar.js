@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useEffect, useContext, useState } from "react";
 import { LoginContext } from "./App";
 import { Calendar, momentLocalizer } from "react-big-calendar";
@@ -21,7 +21,7 @@ export default function CalendarContainer(props) {
   }, []);
 
   //gets calendar entries and saves them to state
-  async function getCalendarEntries() {
+  const getCalendarEntries = useCallback(async () => {
     const userID = authenticatedUser.login.user._id;
     const log = client.service("log");
     console.log(userID);
@@ -39,7 +39,27 @@ export default function CalendarContainer(props) {
     });
 
     setCalendarEntries(formattedEntries);
-  }
+  }, [setCalendarEntries, authenticatedUser.login.user._id]);
+
+  // async function getCalendarEntries() {
+  //   const userID = authenticatedUser.login.user._id;
+  //   const log = client.service("log");
+  //   console.log(userID);
+
+  //   const calendarEntryData = await log.find({
+  //     query: {
+  //       $limit: 100,
+  //       userId: userID,
+  //       $select: ["calendarEntry", "_id"],
+  //     },
+  //   });
+  //   console.log(calendarEntryData);
+  //   const formattedEntries = calendarEntryData.data.map((entry) => {
+  //     return { ...entry.calendarEntry, id: entry._id };
+  //   });
+
+  //   setCalendarEntries(formattedEntries);
+  // }
 
   async function getSelectedEntry(id) {
     const log = client.service("log");
