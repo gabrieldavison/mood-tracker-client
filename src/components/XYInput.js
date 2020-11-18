@@ -106,8 +106,8 @@ export default function XYInput(props) {
     <canvas
       id="canvas"
       style={{ border: "1px solid black" }}
-      height="400"
-      width="400"
+      height="300"
+      width="300"
     ></canvas>
   );
 }

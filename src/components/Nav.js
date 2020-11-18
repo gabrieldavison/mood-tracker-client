@@ -24,7 +24,7 @@ const navItem = css`
     a {
       font-size: 1.5em;
       text-decoration: none;
-      margin-right: 2em;
+      margin-right: 1em;
     }
     a:hover {
       text-decoration: underline;
@@ -84,6 +84,15 @@ export default function Nav(props) {
             }
           >
             <Link to="/dashboard">Dashboard</Link>
+          </li>
+          <li
+            className={
+              location.pathname === "/visualize"
+                ? navItem__selected
+                : navItem__unselected
+            }
+          >
+            <Link to="/visualize">Visualize</Link>
           </li>
         </div>
         <div>

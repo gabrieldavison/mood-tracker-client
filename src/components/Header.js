@@ -13,6 +13,7 @@ export default function Header() {
           color: ${colors.dark};
           margin-bottom: 0.1em;
           font-size: 5em;
+          margin-top: 0.5rem;
         `}
       >
         Temper

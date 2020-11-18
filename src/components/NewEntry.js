@@ -4,6 +4,7 @@ import { isEmpty } from "ramda";
 import client from "../utils/feathers";
 import Header from "./Header";
 import Nav from "./Nav";
+import { navigate } from "@reach/router";
 
 export default function NewEntry() {
   function submit(data, validate, setErrors) {
@@ -15,6 +16,7 @@ export default function NewEntry() {
         .service("log")
         .create(data)
         .catch((error) => setErrors(error.message));
+      navigate("/dashboard");
     } else {
       setErrors(errors);
     }

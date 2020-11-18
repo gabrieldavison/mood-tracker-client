@@ -169,32 +169,34 @@ function Quiz(props) {
           name="notes"
         ></textarea>
       </div>
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          if (props.clearOnSubmit) {
-            resetFields();
-          }
-          props.submit(
-            { happy, calm, sleep, triggersList, notes },
-            validate,
-            setErrors
-          );
-        }}
-      >
-        Submit
-      </button>
-      {props.handleDelete ? (
+      <div>
         <button
           onClick={(e) => {
             e.preventDefault();
-            props.handleDelete();
-            resetFields();
+            if (props.clearOnSubmit) {
+              resetFields();
+            }
+            props.submit(
+              { happy, calm, sleep, triggersList, notes },
+              validate,
+              setErrors
+            );
           }}
         >
-          Delete
+          Submit
         </button>
-      ) : null}
+        {props.handleDelete ? (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              props.handleDelete();
+              resetFields();
+            }}
+          >
+            Delete
+          </button>
+        ) : null}
+      </div>
       {R.isEmpty(errors)
         ? null
         : errors.map((error, i) => <p key={i}>{error}</p>)}
