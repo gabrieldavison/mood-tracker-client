@@ -53,7 +53,7 @@ export default function CalendarContainer(props) {
   //gets calendar entries on component mount
   useEffect(() => {
     getCalendarEntries();
-  }, [getCalendarEntries]);
+  }, [getCalendarEntries, calendarEntries]);
 
   async function getSelectedEntry(id) {
     const log = client.service("log");
