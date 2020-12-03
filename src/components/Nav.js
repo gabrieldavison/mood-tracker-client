@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "@reach/router";
+import { Link, useLocation, navigate } from "@reach/router";
 import client from "../utils/feathers";
 import { css, cx } from "emotion";
 import { colors } from "../utils/colors";
@@ -59,7 +59,7 @@ const navItem__selected = navItem + "--selected";
 
 export default function Nav(props) {
   function logout() {
-    client.logout();
+    client.logout().then(navigate("/login"));
   }
   const location = useLocation();
 

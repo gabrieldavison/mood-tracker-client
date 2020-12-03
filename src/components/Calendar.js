@@ -39,6 +39,7 @@ export default function CalendarContainer(props) {
       query: {
         $limit: 100,
         userId: userID,
+
         $select: ["calendarEntry", "_id"],
       },
     });
@@ -53,7 +54,7 @@ export default function CalendarContainer(props) {
   //gets calendar entries on component mount
   useEffect(() => {
     getCalendarEntries();
-  }, [getCalendarEntries, calendarEntries]);
+  }, [getCalendarEntries]);
 
   async function getSelectedEntry(id) {
     const log = client.service("log");

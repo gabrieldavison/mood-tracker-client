@@ -4,12 +4,12 @@ import { css } from "emotion";
 import { colors } from "../utils/colors";
 import { Link } from "@reach/router";
 
-function LoginForm(props) {
+function SignupForm(props) {
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [errorMessage, setErrorMessage] = useState();
 
-  function login(e) {
+  function signup(e) {
     e.preventDefault();
     const { username, password } = {
       username: usernameInput,
@@ -20,12 +20,8 @@ function LoginForm(props) {
     console.log(password);
 
     return client
-      .authenticate({
-        strategy: "local",
-        username,
-        password,
-      })
-
+      .service("users")
+      .create({ username, password })
       .catch((error) => setErrorMessage(error.message));
   }
 
@@ -47,12 +43,13 @@ function LoginForm(props) {
           flex-direction: column;
           align-items: center;
           margin: auto;
+          margin-top: 2em;
         `}
       >
         <div
           className={css`
             min-width: 40%;
-            margin-top: 3em;
+            margin-top: 1em;
           `}
         >
           <label htmlFor="username">Username</label>
@@ -71,14 +68,16 @@ function LoginForm(props) {
             value={passwordInput}
             onChange={(e) => setPasswordInput(e.target.value)}
           />
+
           <div
             className={css`
               text-align: center;
             `}
           >
-            <button onClick={(e) => login(e)}>Log In</button>
+            <p>Choose a username and password</p>
+            <button onClick={(e) => signup(e)}>Signup </button>{" "}
             <span>
-              or <Link to="/sign-up">Sign Up</Link>
+              back to <Link to="/login">login</Link>
             </span>
           </div>
           {errorMessage === undefined ? null : <p>{errorMessage}</p>}
@@ -88,4 +87,4 @@ function LoginForm(props) {
   );
 }
 
-export default LoginForm;
+export default SignupForm;

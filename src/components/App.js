@@ -4,6 +4,7 @@ import emotionNormalize from "emotion-normalize";
 import Login from "./Login";
 import client from "../utils/feathers";
 import AuthenticatedRoute from "./AuthenticatedRoute";
+import UnauthenticatedRoute from "./UnauthenticatedRoute";
 import { colors } from "../utils/colors";
 
 export const LoginContext = createContext({});
@@ -44,7 +45,7 @@ function App() {
   });
 
   return login == null ? (
-    <Login setLogin={setLogin} />
+    <UnauthenticatedRoute setLogin={setLogin} />
   ) : (
     <LoginContext.Provider value={login}>
       <AuthenticatedRoute />

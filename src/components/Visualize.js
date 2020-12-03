@@ -94,16 +94,27 @@ export default function Visualize() {
     <>
       <Header />
       <Nav />
-      {console.log(graphData)}
-      <div className={graphContainer}>
-        {graphData ? (
-          <VegaLite
-            spec={vegaSpec}
-            data={graphData}
-            style={{ width: "100%" }}
-          />
-        ) : null}
-      </div>
+      {graphData && graphData.graph.length === 0 ? (
+        <div
+          className={css`
+            text-align: center;
+            font-size: 2em;
+            margin-top: 4em;
+          `}
+        >
+          <p>There are no entries to show.</p>
+        </div>
+      ) : (
+        <div className={graphContainer}>
+          {graphData ? (
+            <VegaLite
+              spec={vegaSpec}
+              data={graphData}
+              style={{ width: "100%" }}
+            />
+          ) : null}
+        </div>
+      )}
     </>
   );
 }
