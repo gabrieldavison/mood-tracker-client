@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.js": "/temper-client/static/js/main.70672db5.chunk.js",
+    "main.js.map": "/temper-client/static/js/main.70672db5.chunk.js.map",
+    "runtime-main.js": "/temper-client/static/js/runtime-main.e8165ecb.js",
+    "runtime-main.js.map": "/temper-client/static/js/runtime-main.e8165ecb.js.map",
+    "static/css/2.25b83785.chunk.css": "/temper-client/static/css/2.25b83785.chunk.css",
+    "static/js/2.4274a1de.chunk.js": "/temper-client/static/js/2.4274a1de.chunk.js",
+    "static/js/2.4274a1de.chunk.js.map": "/temper-client/static/js/2.4274a1de.chunk.js.map",
+    "index.html": "/temper-client/index.html",
+    "precache-manifest.e45b24ad8c0495b333a26070a10a07e6.js": "/temper-client/precache-manifest.e45b24ad8c0495b333a26070a10a07e6.js",
+    "service-worker.js": "/temper-client/service-worker.js",
+    "static/css/2.25b83785.chunk.css.map": "/temper-client/static/css/2.25b83785.chunk.css.map",
+    "static/js/2.4274a1de.chunk.js.LICENSE.txt": "/temper-client/static/js/2.4274a1de.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e8165ecb.js",
+    "static/css/2.25b83785.chunk.css",
+    "static/js/2.4274a1de.chunk.js",
+    "static/js/main.70672db5.chunk.js"
+  ]
+}
