@@ -15,7 +15,7 @@ const graphContainer = css`
 export default function Visualize() {
   const [graphData, setGraphData] = useState();
   const authenticatedUser = useContext(LoginContext);
-  const [timeFrame, setTimeFrame] = useState("month");
+  const [timeFrame] = useState("month");
 
   const vegaSpec = {
     width: "container",

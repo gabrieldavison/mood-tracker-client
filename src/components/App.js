@@ -1,7 +1,6 @@
 import React, { useEffect, useState, createContext } from "react";
 import { injectGlobal } from "emotion";
 import emotionNormalize from "emotion-normalize";
-import Login from "./Login";
 import client from "../utils/feathers";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import UnauthenticatedRoute from "./UnauthenticatedRoute";

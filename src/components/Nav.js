@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation, navigate } from "@reach/router";
 import client from "../utils/feathers";
-import { css, cx } from "emotion";
+import { css } from "emotion";
 import { colors } from "../utils/colors";
 
 const navBar = css`
