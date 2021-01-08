@@ -1,11 +1,10 @@
-# [Demo](https://temper-client.netlify.app/)
+### [Demo](https://temper-client.netlify.app/)
 
 (server shuts down when not in use so may initially be slow to load)
-
 User: test
 Password: password
 
-# [Server Code](https://github.com/gabrieldavison/temper-backend)
+### [Server Code](https://github.com/gabrieldavison/temper-backend)
 
 Temper is a web application for tracking your mood and visualizing how it changes over time.
 
